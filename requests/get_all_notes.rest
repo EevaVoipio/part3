@@ -1,4 +1,4 @@
-POST https://stunning-bryce-canyon-77182.herokuapp.com//api/persons/
+POST https://stunning-bryce-canyon-77182.herokuapp.com/api/persons/
 Content-Type: application/json
 
 {
