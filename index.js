@@ -1,7 +1,34 @@
 const express = require("express");
+const morgan = require("morgan");
+
 const app = express();
 
 app.use(express.json());
+
+morgan.token("postPerson", function (req, res) {
+  return JSON.stringify(req.body);
+});
+
+morgan.format(
+  "person",
+  ":method :url :status :res[content-length] - :response-time ms :postPerson"
+);
+
+app.use(
+  morgan("person", {
+    skip: function (req, res) {
+      return req.method !== "POST";
+    },
+  })
+);
+
+app.use(
+  morgan("tiny", {
+    skip: function (req, res) {
+      return req.method === "POST";
+    },
+  })
+);
 
 let persons = [
   {
@@ -15,12 +42,6 @@ let persons = [
     id: 3,
   },
 ];
-
-const info = "";
-
-app.get("/", (req, res) => {
-  res.send("<h1>Hello World!</h1>");
-});
 
 app.get("/info", (req, res) => {
   res.send(
