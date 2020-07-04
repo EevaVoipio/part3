@@ -36,8 +36,8 @@ app.use(
   })
 );
 
-app.get("/info", (req, res) => {
-  res.send(
+app.get("/info", (request, response) => {
+  request.send(
     "<p>Phonebook has info for " +
       Person.length +
       " people</p>" +
@@ -50,7 +50,7 @@ app.get("/info", (req, res) => {
 app.get("/api/persons", (request, response, next) => {
   Person.find({})
     .then((result) => {
-      response.json(result);
+      return response.json(result);
     })
     .catch((error) => next(error));
 });
@@ -88,11 +88,7 @@ app.post("/api/persons", (request, response, next) => {
       error: "number missing",
     });
   }
-  /*if (persons.map((person) => person.name).includes(body.name)) {
-    return response.status(400).json({
-      error: "name must be unique",
-    });
-  }*/
+
   const name = body.name;
   const number = body.number;
   const person = new Person({
